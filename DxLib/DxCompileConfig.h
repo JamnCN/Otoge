@@ -2,7 +2,7 @@
 //
 //		ＤＸライブラリ　コンパイルコンフィグヘッダファイル
 //
-//				Ver 3.20f
+//				Ver 3.23 
 //
 // ----------------------------------------------------------------------------
 
@@ -18,6 +18,9 @@
 
 // スタティックライブラリ生成時ライブラリ機能制限用定義 -----------------------
 
+// C言語用としてコンパイルする場合は次のコメントを外してください
+//#define DX_COMPILE_TYPE_C_LANGUAGE
+
 // namespace DxLib を使用しない場合は次のコメントを外してください
 //#define DX_NON_NAMESPACE
 
@@ -25,7 +28,7 @@
 //#define DX_NON_USING_NAMESPACE_DXLIB
 
 // インラインアセンブラを使用しないソースコードでコンパイルする場合は以下のコメントアウトを外してください
-//#define DX_NON_INLINE_ASM
+#define DX_NON_INLINE_ASM
 
 // ＤＸライブラリのプログラムから文字列を一切排除する場合はコメントを外してください
 // (バイナリエディタで実行ファイルを開いてもＤＸライブラリを使用していることが分かり難くなります(よく調べれば当然分かりますが)
@@ -108,6 +111,9 @@
 // ※DxUseCLib.lib も再コンパイルする必要があります
 //#define DX_NON_OPUS
 
+// ASIO を使用しない方は次のコメントをはずしてください
+//#define DX_NON_ASIO
+
 // 乱数発生器に Mersenne Twister を使用しない場合は以下のコメントを外して下さい
 // ※DxUseCLib.lib も再コンパイルする必要があります
 //#define DX_NON_MERSENNE_TWISTER
@@ -174,6 +180,21 @@
 // コンパイル済みのシェーダーバイナリを使用せず、シェーダーコードの実行時コンパイルを利用する場合は次のコメントを外してください
 //#define DX_NON_SHADERCODE_BINARY
 
+// Live2D Cubism 4 関連の機能を使用しない場合は次のコメントを外してください
+//#define DX_NON_LIVE2D_CUBISM4
+
+#ifndef __cplusplus
+	#ifndef DX_COMPILE_TYPE_C_LANGUAGE
+		#define DX_COMPILE_TYPE_C_LANGUAGE
+	#endif // DX_COMPILE_TYPE_C_LANGUAGE
+#endif // __cplusplus
+
+#ifdef DX_COMPILE_TYPE_C_LANGUAGE
+	#ifndef DX_NON_NAMESPACE
+		#define DX_NON_NAMESPACE
+	#endif // DX_NON_NAMESPACE
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+
 #ifndef __APPLE__
 #ifndef __ANDROID__
 	#define WINDOWS_DESKTOP_OS
@@ -204,7 +225,7 @@
 #endif // WINDOWS_DESKTOP_OS
 
 #if defined( __ANDROID__ ) || defined( __APPLE__ )
-#define DX_NON_2DDRAW
+//#define DX_NON_2DDRAW
 #define DX_NON_ACM
 #define DX_NON_DSHOW_MP3
 #define DX_NON_DSHOW_MOVIE
@@ -274,6 +295,9 @@
 	#endif
 	#ifndef DX_NOTUSE_DRAWFUNCTION
 		#define DX_NOTUSE_DRAWFUNCTION
+	#endif
+	#ifndef DX_NON_LIVE2D_CUBISM4
+		#define DX_NON_LIVE2D_CUBISM4
 	#endif
 #endif // DX_NON_GRAPHICS
 
@@ -376,7 +400,7 @@
 
 
 
-#if defined( _WIN64 ) || defined( __ANDROID__ ) || defined( __APPLE__ )
+#if defined( _WIN64 ) || defined( __ANDROID__ ) || defined( __APPLE__ ) || defined( DX_GCC_COMPILE )
 	#ifndef DX_NON_INLINE_ASM
 		#define DX_NON_INLINE_ASM
 	#endif
