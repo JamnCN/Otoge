@@ -4,3 +4,5 @@
 
 # ライセンスと著作権
 [こちら](LICENSE.md)
+
+# (https://github.com/NoixChou/Otoge)
